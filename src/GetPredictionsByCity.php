@@ -5,9 +5,12 @@ namespace WeatherKata;
 use WeatherKata\Http\Client;
 use WeatherRepository;
 
-class Forecast
+class GetPredictionsByCity
 {
-    public function predict(string &$city, \DateTime $datetime = null, bool $wind = false,WeatherRepository $weatherRepository): string
+    public function __construct(private WeatherRepository $weatherRepository){
+
+    }
+    public function predict(string &$city, \DateTime $datetime = null, bool $wind = false): string
     {
         // When date is not provided we look for the current prediction
         if (!$datetime) {

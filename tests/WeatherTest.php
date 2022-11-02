@@ -2,15 +2,22 @@
 
 namespace Tests\WeatherKata;
 
-use WeatherKata\Forecast;
+use WeatherKata\GetPredictionsByCity;
+use WeatherKata\Http\Client;
 use PHPUnit\Framework\TestCase;
 
 class WeatherTest extends TestCase
 {
+
+    public function __construct(){
+        $apiWeatherImpl = n;
+        APIWeatherImpl(new Client());   
+    }
+    
     /** @test */
     public function find_the_weather_of_today()
     {
-        $forecast = new Forecast();
+        $forecast = new GetPredictionsByCity($apiWeatherImpl);
         $city     = "Madrid";
 
         $prediction = $forecast->predict($city);
@@ -21,7 +28,7 @@ class WeatherTest extends TestCase
     /** @test */
     public function find_the_weather_of_any_day()
     {
-        $forecast = new Forecast();
+        $forecast = new GetPredictionsByCity($apiWeatherImpl);       
         $city     = "Madrid";
 
         $prediction = $forecast->predict($city, new \DateTime('+2 days'));
@@ -32,9 +39,8 @@ class WeatherTest extends TestCase
 /** @test */
     public function find_the_wind_of_any_day()
     {
-        $forecast = new Forecast();
+        $forecast = new GetPredictionsByCity($apiWeatherImpl);
         $city = "Madrid";
-
         $prediction = $forecast->predict($city, null, true);
 
         $this->assertEquals(60.0, $prediction);
@@ -43,7 +49,7 @@ class WeatherTest extends TestCase
     /** @test */
     public function change_the_city_to_woeid()
     {
-        $forecast = new Forecast();
+        $forecast = new GetPredictionsByCity($apiWeatherImpl);        
         $city = "Madrid";
 
         $forecast->predict($city, null, true);
@@ -54,7 +60,7 @@ class WeatherTest extends TestCase
     /** @test */
     public function there_is_no_prediction_for_more_than_5_days()
     {
-        $forecast = new Forecast();
+        $forecast = new GetPredictionsByCity($apiWeatherImpl);        
         $city = "Madrid";
 
         $prediction = $forecast->predict($city, new \DateTime('+6 days'));

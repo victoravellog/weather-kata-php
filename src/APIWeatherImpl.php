@@ -1,21 +1,39 @@
 <?php
 
+namespace WeatherKata;
+
 use WeatherKata\Http\Client;
+use WeatherKata\Prediction;
+use WeatherKata\WeatherRepository;
 
 class APIWeatherImpl implements WeatherRepository{
-    public function __construct(private Client $client){
+    public function __construct(private Client $client) {
 
     }
-    public function getId(string $city) : string{
-      return $client->get("https://www.metaweather.com/api/location/search/?query=$city");
+
+    public function getId(string &$city) : string {
+      $city = $client->get("https://www.metaweather.com/api/location/search/?query=$city");
+      return $city;
     }
-    public function getPredictions(string $id) : array{
-      $results = $client->get("https://www.metaweather.com/api/location/$id");
-      return $results;
+    
+    public function getPrediction(string $id, string $date) : array{
+      $rawPredictions = $client->get("https://www.metaweather.com/api/location/$id");
+
+      $rawPredictions = array_filter($rawPredictions, function($prediction) use ($date){
+        return $prediction['applicable_date'] == $date;
+      });
+
+      if (count($rawPredictions) > 0){
+        return parsePrediction($rawPredictions[0]);
+      }
+      return "";
     }
 
-    public function getPredictionsByCity(string $city): array {
-      $cityId = this.getId($city);
-      return this.getPredictions($cityId)
+    private function parsePrediction($prediction){
+      return new Prediction(
+        $prediction['applicable_date'],
+        $prediction['wind_speed'],
+        $prediction['weather_state_name'],
+      );
     }
 }

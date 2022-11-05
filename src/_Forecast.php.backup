@@ -3,12 +3,11 @@
 namespace WeatherKata;
 
 use WeatherKata\Http\Client;
-use WeatherRepository;
+use WeatherKata\WeatherRepository;
 
 class Forecast
 {
-    public function predict(string &$city, \DateTime $datetime = null, bool $wind = false,WeatherRepository $weatherRepository): string
-    {
+    public function predict(string &$city, \DateTime $datetime = null, bool $wind = false, WeatherRepository $weatherRepository): string {
         // When date is not provided we look for the current prediction
         if (!$datetime) {
             $datetime = new \DateTime();

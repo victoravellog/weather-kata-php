@@ -3,7 +3,7 @@ install:
 
 .PHONY: tests
 tests:
-	./vendor/bin/phpunit
+	./vendor/bin/phpunit --debug
 
 complexity:
 	./vendor/bin/phpmetrics src/

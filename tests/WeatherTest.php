@@ -2,16 +2,16 @@
 
 namespace Tests\WeatherKata;
 
-use WeatherKata\z;
 use WeatherKata\Http\Client;
 use PHPUnit\Framework\TestCase;
 use WeatherKata\APIWeatherImpl;
+use WeatherKata\GetPredictionsByCity;
 
 class WeatherTest extends TestCase
 {
     private APIWeatherImpl $apiWeatherImpl;
 
-    public function __construct(){
+    protected function setUp() : void{
         $this->apiWeatherImpl = new APIWeatherImpl(new Client());   
     }
     
@@ -61,7 +61,7 @@ class WeatherTest extends TestCase
     /** @test */
     public function there_is_no_prediction_for_more_than_5_days()
     {
-        $forecast = new GetPredictionsByCity($apiWeatherImpl);        
+        $forecast = new GetPredictionsByCity($this->apiWeatherImpl);        
         $city = "Madrid";
 
         $prediction = $forecast->predict($city, new \DateTime('+6 days'));

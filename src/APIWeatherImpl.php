@@ -12,19 +12,20 @@ class APIWeatherImpl implements WeatherRepository{
     }
 
     public function getId(string &$city) : string {
-      $city = $client->get("https://www.metaweather.com/api/location/search/?query=$city");
+      $city = $this->client->get("https://www.metaweather.com/api/location/search/?query=$city");
       return $city;
     }
     
-    public function getPrediction(string $id, string $date) : array{
-      $rawPredictions = $client->get("https://www.metaweather.com/api/location/$id");
+    public function getPrediction(string $id, string $date) : Prediction{
+      var_dump($date);
+      $rawPredictions = $this->client->get("https://www.metaweather.com/api/location/$id");
 
       $rawPredictions = array_filter($rawPredictions, function($prediction) use ($date){
         return $prediction['applicable_date'] == $date;
       });
 
       if (count($rawPredictions) > 0){
-        return parsePrediction($rawPredictions[0]);
+        return $this->parsePrediction($rawPredictions[0]);
       }
       return "";
     }

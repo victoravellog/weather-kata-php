@@ -22,10 +22,10 @@ class GetPredictionsByCity
     }
 
     // Find the exact prediction for the city
-    $id = $weatherRepository->getId($city);
-    var_dump(">>>> ID: ".$id);
-    $prediction = $weatherRepository->getPrediction($id, $datetime->format('Y-m-d'));
-    var_dump(">>>> PREDICTION: ".$prediction);
+    $city = $this->weatherRepository->getId($city);
+    //var_dump(">>>> ID: ".$city);
+    $prediction = $this->weatherRepository->getPrediction($city, $datetime->format('Y-m-d'));
+    //var_dump(">>>> PREDICTION: ".$prediction);
 
     if (empty($prediction)){
       return "";

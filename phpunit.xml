@@ -1,7 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <phpunit backupGlobals="false"
          bootstrap="./vendor/autoload.php"
+         beStrictAboutOutputDuringTests="false"
          verbose="true">
+         <php>
+            <env name="APP_DEBUG" value="1"/>
+         </php>
     <testsuite name="PHPUnit Skeleton Generator">
         <directory suffix="Test.php">./tests</directory>
     </testsuite>

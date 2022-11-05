@@ -17,15 +17,16 @@ class APIWeatherImpl implements WeatherRepository{
     }
     
     public function getPrediction(string $id, string $date) : Prediction{
-      var_dump($date);
+      //var_dump($date);
       $rawPredictions = $this->client->get("https://www.metaweather.com/api/location/$id");
 
       $rawPredictions = array_filter($rawPredictions, function($prediction) use ($date){
         return $prediction['applicable_date'] == $date;
       });
-
+      //var_dump(count($rawPredictions));
+      //var_dump($rawPredictions);
       if (count($rawPredictions) > 0){
-        return $this->parsePrediction($rawPredictions[0]);
+        return $this->parsePrediction(current($rawPredictions));
       }
       return "";
     }

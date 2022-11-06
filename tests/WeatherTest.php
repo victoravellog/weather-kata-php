@@ -11,15 +11,16 @@ class WeatherTest extends TestCase
 {
     private APIWeatherImpl $apiWeatherImpl;
 
-    protected function setUp() : void{
-        $this->apiWeatherImpl = new APIWeatherImpl(new Client());   
+    protected function setUp(): void
+    {
+        $this->apiWeatherImpl = new APIWeatherImpl(new Client());
     }
-    
+
     /** @test */
     public function find_the_weather_of_today()
     {
         $forecast = new GetPredictionsByCity($this->apiWeatherImpl);
-        $city     = "Madrid";
+        $city = "Madrid";
 
         $prediction = $forecast->predict($city);
 
@@ -29,15 +30,15 @@ class WeatherTest extends TestCase
     /** @test */
     public function find_the_weather_of_any_day()
     {
-        $forecast = new GetPredictionsByCity($this->apiWeatherImpl);       
-        $city     = "Madrid";
+        $forecast = new GetPredictionsByCity($this->apiWeatherImpl);
+        $city = "Madrid";
 
         $prediction = $forecast->predict($city, new \DateTime('+2 days'));
 
-        $this->assertEquals('sunny', $prediction );
+        $this->assertEquals('sunny', $prediction);
     }
 
-/** @test */
+    /** @test */
     public function find_the_wind_of_any_day()
     {
         $forecast = new GetPredictionsByCity($this->apiWeatherImpl);
@@ -50,7 +51,7 @@ class WeatherTest extends TestCase
     /** @test */
     public function change_the_city_to_woeid()
     {
-        $forecast = new GetPredictionsByCity($this->apiWeatherImpl);        
+        $forecast = new GetPredictionsByCity($this->apiWeatherImpl);
         $city = "Madrid";
 
         $forecast->predict($city, null, true);
@@ -61,7 +62,7 @@ class WeatherTest extends TestCase
     /** @test */
     public function there_is_no_prediction_for_more_than_5_days()
     {
-        $forecast = new GetPredictionsByCity($this->apiWeatherImpl);        
+        $forecast = new GetPredictionsByCity($this->apiWeatherImpl);
         $city = "Madrid";
 
         $prediction = $forecast->predict($city, new \DateTime('+6 days'));

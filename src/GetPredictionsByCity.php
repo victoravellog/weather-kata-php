@@ -27,14 +27,10 @@ class GetPredictionsByCity
         $prediction = $this->weatherRepository->getPrediction($city, $datetime->format('Y-m-d'));
         //var_dump(">>>> PREDICTION: ".$prediction);
 
-        if (empty($prediction)) {
-            return "";
-        }
-
-        return empty($prediction) ? "" : $this->getPredictionByWind($prediction, $wind);
+        return empty($prediction) ? "" : $this->getPredictionByType($prediction, $wind);
     }
 
-    private function getPredictionByWind($prediction, $wind): string
+    private function getPredictionByType($prediction, $wind): string
     {
         if ($wind) {
             return $prediction->windSpeed;

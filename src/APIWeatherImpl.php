@@ -16,7 +16,7 @@ class APIWeatherImpl implements WeatherRepository{
       return $city;
     }
     
-    public function getPrediction(string $id, string $date) : Prediction{
+    public function getPrediction(string $id, string $date) : Prediction|string{
       //var_dump($date);
       $rawPredictions = $this->client->get("https://www.metaweather.com/api/location/$id");
 
@@ -31,7 +31,7 @@ class APIWeatherImpl implements WeatherRepository{
       return "";
     }
 
-    private function parsePrediction($prediction){
+    private function parsePrediction($prediction) : Prediction{
       return new Prediction(
         $prediction['applicable_date'],
         $prediction['wind_speed'],

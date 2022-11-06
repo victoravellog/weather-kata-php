@@ -12,13 +12,13 @@ class GetPredictionsByCity
 
     public function predict(string &$city, \DateTime $datetime = null, bool $wind = false): string
     {
+        if ($datetime && $datetime >= new \DateTime(self::MAXIMUM_DAYS_AFTER_DATETIME_FORMATTED)) {
+            return "";
+        }
+
         // When date is not provided we look for the current prediction
         if (!$datetime) {
             $datetime = new \DateTime();
-        }
-
-        if ($datetime >= new \DateTime(self::MAXIMUM_DAYS_AFTER_DATETIME_FORMATTED)) {
-            return "";
         }
 
         // Find the exact prediction for the city

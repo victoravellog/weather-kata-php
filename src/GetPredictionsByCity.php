@@ -4,6 +4,8 @@ namespace WeatherKata;
 
 class GetPredictionsByCity
 {
+    const MAXIMUM_DAYS_AFTER_DATETIME_FORMATTED = "+6 days 00:00:00";
+
     public function __construct(private WeatherRepository $weatherRepository)
     {
     }
@@ -15,7 +17,7 @@ class GetPredictionsByCity
             $datetime = new \DateTime();
         }
 
-        if ($datetime >= new \DateTime("+6 days 00:00:00")) {
+        if ($datetime >= new \DateTime(self::MAXIMUM_DAYS_AFTER_DATETIME_FORMATTED)) {
             return "";
         }
 
@@ -29,10 +31,10 @@ class GetPredictionsByCity
             return "";
         }
 
-        return $this->getPredictionByWind($prediction, $wind);
+        return empty($prediction) ? "" : $this->getPredictionByWind($prediction, $wind);
     }
 
-    private function getPredictionByWind($prediction, $wind)
+    private function getPredictionByWind($prediction, $wind): string
     {
         if ($wind) {
             return $prediction->windSpeed;

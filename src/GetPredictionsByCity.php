@@ -2,8 +2,6 @@
 
 namespace WeatherKata;
 
-use WeatherKata\WeatherRepository;
-
 class GetPredictionsByCity
 {
     public function __construct(private WeatherRepository $weatherRepository)

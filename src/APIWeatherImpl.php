@@ -3,8 +3,6 @@
 namespace WeatherKata;
 
 use WeatherKata\Http\Client;
-use WeatherKata\Prediction;
-use WeatherKata\WeatherRepository;
 
 class APIWeatherImpl implements WeatherRepository
 {

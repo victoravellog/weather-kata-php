@@ -1,8 +1,8 @@
 <?php
 
-namespace WeatherKata\Http;
+namespace WeatherKata\infrastructure\Http;
 
-class Client
+class MockClient
 {
     public function get(string $a_url): string|array
     {

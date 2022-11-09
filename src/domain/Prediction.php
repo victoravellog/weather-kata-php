@@ -1,6 +1,6 @@
 <?php
 
-namespace WeatherKata;
+namespace WeatherKata\domain;
 
 //Prediction DTO
 class Prediction {

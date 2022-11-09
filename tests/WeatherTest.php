@@ -2,70 +2,83 @@
 
 namespace Tests\WeatherKata;
 
-use WeatherKata\Http\Client;
+use WeatherKata\infrastructure\Http\MockClient;
 use PHPUnit\Framework\TestCase;
-use WeatherKata\APIWeatherImpl;
-use WeatherKata\GetPredictionsByCity;
+use WeatherKata\infrastructure\APIPredictionImpl;
+use WeatherKata\application\GetWeatherByCity;
+use WeatherKata\application\GetWindByCity;
 
 class WeatherTest extends TestCase
 {
-    private APIWeatherImpl $apiWeatherImpl;
+    private APIPredictionImpl $APIPredictionImpl;
 
     protected function setUp() : void{
-        $this->apiWeatherImpl = new APIWeatherImpl(new Client());   
+        $this->APIPredictionImpl = new APIPredictionImpl(new MockClient());   
     }
     
     /** @test */
     public function find_the_weather_of_today()
     {
-        $forecast = new GetPredictionsByCity($this->apiWeatherImpl);
+        $getWeatherByCity = new GetWeatherByCity($this->APIPredictionImpl);
         $city     = "Madrid";
 
-        $prediction = $forecast->predict($city);
+        $weather = $getWeatherByCity->invoke($city);
 
-        $this->assertEquals('sunny', $prediction);
+        $this->assertEquals('sunny', $weather);
     }
 
     /** @test */
     public function find_the_weather_of_any_day()
     {
-        $forecast = new GetPredictionsByCity($this->apiWeatherImpl);       
+        $getWeatherByCity = new GetWeatherByCity($this->APIPredictionImpl);       
         $city     = "Madrid";
 
-        $prediction = $forecast->predict($city, new \DateTime('+2 days'));
+        $weather = $getWeatherByCity->invoke($city, new \DateTime('+2 days'));
 
-        $this->assertEquals('sunny', $prediction );
+        $this->assertEquals('sunny', $weather);
     }
 
-/** @test */
+    /** @test */
     public function find_the_wind_of_any_day()
     {
-        $forecast = new GetPredictionsByCity($this->apiWeatherImpl);
+        $getWindByCity = new GetWindByCity($this->APIPredictionImpl);
         $city = "Madrid";
-        $prediction = $forecast->predict($city, null, true);
+        
+        $wind = $getWindByCity->invoke($city, null);
 
-        $this->assertEquals(60.0, $prediction);
+        $this->assertEquals(60.0, $wind);
     }
 
     /** @test */
     public function change_the_city_to_woeid()
     {
-        $forecast = new GetPredictionsByCity($this->apiWeatherImpl);        
+        $getWeatherByCity = new GetWeatherByCity($this->APIPredictionImpl);        
         $city = "Madrid";
 
-        $forecast->predict($city, null, true);
+        $getWeatherByCity->invoke($city, null);
 
         $this->assertEquals("766273", $city);
     }
 
     /** @test */
-    public function there_is_no_prediction_for_more_than_5_days()
+    public function there_is_no_weather_prediction_for_more_than_5_days()
     {
-        $forecast = new GetPredictionsByCity($this->apiWeatherImpl);        
+        $getWeatherByCity = new GetWeatherByCity($this->APIPredictionImpl);        
         $city = "Madrid";
 
-        $prediction = $forecast->predict($city, new \DateTime('+6 days'));
+        $prediction = $getWeatherByCity->invoke($city, new \DateTime('+6 days'));
 
-        $this->assertEquals("", $prediction);
+        $this->assertEquals(null, $prediction);
+    }
+
+    /** @test */
+    public function there_is_no_wind_prediction_for_more_than_5_days()
+    {
+        $getWindByCity = new GetWindByCity($this->APIPredictionImpl);        
+        $city = "Madrid";
+
+        $prediction = $getWindByCity->invoke($city, new \DateTime('+6 days'));
+
+        $this->assertEquals(null, $prediction);
     }
 }
